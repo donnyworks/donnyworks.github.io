@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Optimal Portal</title>
+    <link rel="stylesheet" href="termina.css"/>
+	</head>
+	<body>
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="jquery_terminal.js"></script>
+		<script>
+      var helpqt = false;
+      var loggedIn = false;
+      var commandFlowMain = true;
+      var commandFlowReport = false;
+      var commandFlowViolation = false;
+      jQuery(function($, undefined) {
+    $('#hello').terminal(function(command) {
+        if (command !== '' && commandFlowMain) {
+            switch(command.toLowerCase()) {
+              case "login":
+                if (!loggedIn) {
+                  this.echo('Automatically authenticating...');
+                  loggedIn = true;
+                  this.echo('Logged in as eriks@optimal.ca');
+                }
+                break;
+              case "exit":
+                this.echo('I\'d do that, but I don\'t know how.');
+                break;
+              case "escape":
+                this.echo('We\'re sorry, but at this time, there are no Optimal PC employees available to process your request.');
+                break;
+              case "help":
+                if (!helpqt) { this.echo('If this is a plea for physical assistance, please type ESCAPE, otherwise, type HELP again.'); helpqt = true}
+                else {
+                  this.echo('HELP with Optimal PC QA Portal:');
+                  this.echo('help - Shows this help message');
+                  this.echo('escape - Calls an Optimal PC employee to your station to assist you.');
+                  this.echo('exit - There is no exit from this software.');
+                  if (!loggedIn) { this.echo('login - Log into the Optimal System'); }
+                  else {
+                    this.echo('logout - Exit your current session.');
+                    this.echo('about - View an about page for Optimal PC.');
+                    this.echo('report - File a bug report with a piece of Optimal software.');
+                    this.echo('acceptStationRequest - Accept an ESCAPE request.');
+                    this.echo('accessCode - Password access to ROTOR files.');
+                    this.echo('violation - Report a term violation of an Optimal PC Quality Assurance tester.');
+                    this.echo('violatorGuard - See any Optimal Guard violations (unusual logins)');
+                  }
+                }
+                break;
+              case "logout":
+                if (loggedIn) {
+                  this.echo("Logging you out...");
+                  loggedIn = false;
+                  break;
+                }
+              case "about":
+                if (loggedIn) {
+                  this.echo("Sadly, this page is fanmade, meaning that unless the real Gev Creates decides to insert lore here, it's not happening.");
+                  break;
+                }
+              case "report":
+                if (loggedIn) {
+                  this.echo("Please enter the details of the system error.");
+                  commandFlowMain = false;
+                  commandFlowReport = true;
+                  break;
+                }
+              case "acceptstationrequest":
+                if (loggedIn) {
+                  this.echo("There are no ESCAPE requests at the moment.");
+                  break;
+                }
+              case "accesscode":
+                if (loggedIn) {
+                  this.echo("You do not have the security level to view this information.");
+                  break;
+                }
+              case "violation":
+                if (loggedIn) {
+                  this.echo("Please enter the subject number that violated terms.");
+                  commandFlowMain = false;
+                  commandFlowViolation = true;
+                  break;
+                }
+              case "violatorguard":
+                if (loggedIn) {
+                  this.echo("Recent mysterious login attempts:");
+                  this.echo("[TODAY] JS_TERMINAL logged into your account. If this isn't you, change your password.");
+                  this.echo("[03/06/06] ERIK_PC logged into your account. If this isn't you, change your password.");
+                  this.echo("[05/01/05] ERIK_PC logged into your account. If this isn't you, change your password.");
+                  this.echo("[02/03/05] ERIK_PC logged into your account. If this isn't you, change your password.");
+                  this.echo("[05/12/04] JOHNQA logged into your account. If this isn't you, change your password.");
+                  this.echo("[04/27/04] ERIK_PC logged into your account. If this isn't you, change your password.");
+                  break;
+                }
+              default:
+                this.echo('Invalid command. Type HELP to see all commands.');
+            }
+            //this.echo('You said ' + command);
+        }
+        else if (command != '' && commandFlowReport) {
+          this.echo("Noted. Thank you for doing your part to make sure that The System Is Optimal™®©");
+          commandFlowMain = true;
+          commandFlowReport = false;
+        }
+        else if (command != '' && commandFlowViolation) {
+          this.echo("Noted. Spotters have been dispatched to take care of this unruly subject, and thank you for doing your part to make sure that The System Is Optimal™®©");
+          commandFlowMain = true;
+          commandFlowViolation = false;
+        }
+    }, {
+        greetings: 'Optimal PC Quality Assurance Portal',
+        name: 'hello',
+        height: window.innerHeight,
+        prompt: ' > '
+    });
+});
+		</script>
+		<div id="hello" style="width:100%; height:100%; position: absolute; top: 0; left: 0"></div>
+	</body>
+</html>
